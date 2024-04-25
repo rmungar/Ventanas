@@ -1,3 +1,5 @@
+package Ventana_2_Funciones
+
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
