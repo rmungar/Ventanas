@@ -6,10 +6,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import java.io.File
 
 fun main() = application{
+    val archivoEstudiantes = File("src/Students.txt")
     var estudiante by remember { mutableStateOf("") }
-    val students = mutableListOf("Juan", "Victor", "Esther", "Jaime")
+    val students = archivoEstudiantes.useLines { it.toMutableList() }
     var verVentanaPrincipal by remember { mutableStateOf(true) }
     var verVentanaSecundaria by remember { mutableStateOf(false) }
     var estadoBoton = estudiante.isNotEmpty()
@@ -23,7 +25,7 @@ fun main() = application{
             verVentanaPrincipal,
             verVentanaSecundaria,
             { estudiante = it },
-            {students.add(it)}
+            {archivoEstudiantes.appendText("\n$it")}
         )
     }
 
