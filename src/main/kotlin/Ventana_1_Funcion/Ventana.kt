@@ -4,23 +4,29 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.traceEventEnd
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.unit.dp
 
 
 @Preview
 @Composable
-fun Ventanas(estudiante:String, students: MutableList<String>, estadoBoton:Boolean, verVentanaPrincipal: Boolean, verVentanaSecundaria: Boolean,onEntrada : (String) -> Unit, onClick: (String) -> Unit){
+fun Ventanas(
+    estudiante: String,
+    students: MutableList<String>,
+    estadoBoton: Boolean,
+    verVentanaPrincipal: Boolean,
+    verVentanaSecundaria: Boolean,
+    onEntrada: (String) -> Unit,
+    onClick: (String) -> Unit,
+    onSave: () -> Unit,
+    onDelete: () -> Unit
+){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -29,7 +35,8 @@ fun Ventanas(estudiante:String, students: MutableList<String>, estadoBoton:Boole
         Row {
             Column (
                 modifier = Modifier
-                    .fillMaxSize(0.5F),
+                    .fillMaxWidth(0.5F)
+                    .fillMaxHeight(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ){
@@ -72,12 +79,13 @@ fun Ventanas(estudiante:String, students: MutableList<String>, estadoBoton:Boole
                                 .wrapContentSize()
                                 .background(Color.White),
                             value = estudiante,
-                            enabled = true,
+                            enabled = false,
                             onValueChange = {},
                             trailingIcon = {
                                 IconButton(
                                     enabled = true,
-                                    onClick = {}
+                                    onClick = {
+                                    }
                                 ){
                                     Icon(imageVector = Icons.Default.Delete, "Eliminar Estudiante")
                                 }
@@ -88,15 +96,32 @@ fun Ventanas(estudiante:String, students: MutableList<String>, estadoBoton:Boole
                 Spacer(modifier = Modifier.size(50.dp))
                 Button(
                     onClick = {
-                        onClick(estudiante)
+                        onDelete()
                     },
-                    enabled = estadoBoton,
+                    enabled = true,
                     modifier = Modifier
                         .size(100.dp, 50.dp)
                 ){
-                    Text("AÑADIR")
+                    Text("VACIAR")
                 }
             }
+        }
+        Row(
+            modifier = Modifier
+                .align(Alignment.BottomCenter),
+        ) {
+            Button(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically),
+                onClick = {
+                          onSave()
+                },
+
+
+            ){
+                Text("GUARDAR CAMBIOS")
+            }
+            Spacer(Modifier.size(10.dp))
         }
 
 
