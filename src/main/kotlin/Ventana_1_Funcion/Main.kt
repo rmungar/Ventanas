@@ -13,13 +13,22 @@ fun main() = application{
     var verVentanaPrincipal by remember { mutableStateOf(true) }
     var verVentanaSecundaria by remember { mutableStateOf(false) }
     var estadoBoton = estudiante.isNotEmpty()
+    var user by remember { mutableStateOf("") }
+    var psswd by remember { mutableStateOf("") }
+    var estadoBotonLogin = user.isNotBlank() && psswd.isNotBlank()
+    var psswdVisible by remember { mutableStateOf(false)}
     Window(
        visible = true ,
         onCloseRequest = ::exitApplication
     ){
-        Ventanas(estudiante,
+        Ventanas(
+            user,
+            psswd,
+            psswdVisible,
+            estudiante,
             students,
             estadoBoton,
+            estadoBotonLogin,
             verVentanaPrincipal,
             verVentanaSecundaria,
             { estudiante = it },
@@ -28,10 +37,20 @@ fun main() = application{
                 added.forEach {
                     archivoEstudiantes.appendText("\n$it")
                 }
+                verVentanaPrincipal = true
+                verVentanaSecundaria = false
             },
             {
                 archivoEstudiantes.delete()
                 archivoEstudiantes.createNewFile()
+            },
+            onEntrada1 = {user = it },
+            onEntrada2 = {psswd = it},
+            onLogin = {
+                verVentanaPrincipal = false
+                verVentanaSecundaria = true
+                user = ""
+                psswd = ""
             }
         )
     }
