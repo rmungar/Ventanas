@@ -36,7 +36,8 @@ fun Ventanas(
     onDelete: () -> Unit,
     onEntrada1: (String) -> Unit,
     onEntrada2: (String) -> Unit,
-    onLogin: () -> Unit
+    onLogin: () -> Unit,
+    onBorrar: (String) -> Unit
 ){
     Box(
         modifier = Modifier
@@ -117,6 +118,7 @@ fun Ventanas(
                                     IconButton(
                                         enabled = true,
                                         onClick = {
+
                                         }
                                     ){
                                         Icon(imageVector = Icons.Default.Delete, "Eliminar Estudiante")

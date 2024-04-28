@@ -8,15 +8,17 @@ import java.io.File
 fun main() = application{
     val archivoEstudiantes = File("src/Students.txt")
     var estudiante by remember { mutableStateOf("") }
-    var added =  mutableListOf("")
+    val added =  mutableListOf("")
     val students = archivoEstudiantes.useLines { it.toMutableList() }
     var verVentanaPrincipal by remember { mutableStateOf(true) }
     var verVentanaSecundaria by remember { mutableStateOf(false) }
-    var estadoBoton = estudiante.isNotEmpty()
+    val estadoBoton = estudiante.isNotEmpty()
     var user by remember { mutableStateOf("") }
     var psswd by remember { mutableStateOf("") }
-    var estadoBotonLogin = user.isNotBlank() && psswd.isNotBlank()
-    var psswdVisible by remember { mutableStateOf(false)}
+    val estadoBotonLogin = user.isNotBlank() && psswd.isNotBlank()
+    val psswdVisible by remember { mutableStateOf(false)}
+
+
     Window(
        visible = true ,
         onCloseRequest = ::exitApplication
@@ -31,16 +33,16 @@ fun main() = application{
             estadoBotonLogin,
             verVentanaPrincipal,
             verVentanaSecundaria,
-            { estudiante = it },
-            { added.add(it) },
-            {
+            onEntrada = { estudiante = it },
+            onClick = { added.add(it) },
+            onSave = {
                 added.forEach {
                     archivoEstudiantes.appendText("\n$it")
                 }
                 verVentanaPrincipal = true
                 verVentanaSecundaria = false
             },
-            {
+            onDelete = {
                 archivoEstudiantes.delete()
                 archivoEstudiantes.createNewFile()
             },
@@ -51,6 +53,10 @@ fun main() = application{
                 verVentanaSecundaria = true
                 user = ""
                 psswd = ""
+            },
+            {
+                val lista = archivoEstudiantes.useLines { it.toMutableList() }
+                lista.remove(it)
             }
         )
     }
