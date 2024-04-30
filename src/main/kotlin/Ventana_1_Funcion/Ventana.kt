@@ -166,7 +166,7 @@ fun Students(estudiante: String, onEntrada: (String) -> Unit, students: MutableL
                 modifier = Modifier
                     .border(2.dp, Color.Black)
                     .wrapContentWidth()
-                    .wrapContentSize(),
+                    .size(225.dp),
 
                 ) {
                 items(students.size){ x ->
@@ -191,16 +191,7 @@ fun Students(estudiante: String, onEntrada: (String) -> Unit, students: MutableL
                 }
             }
             Spacer(modifier = Modifier.size(50.dp))
-            Button(
-                onClick = {
-                    onDelete()
-                },
-                enabled = true,
-                modifier = Modifier
-                    .size(100.dp, 50.dp)
-            ){
-                Text("VACIAR")
-            }
+            Vaciar(onDelete)
         }
     }
 }
@@ -223,5 +214,17 @@ fun Guardar(onSave: () -> Unit  ){
             Text("GUARDAR CAMBIOS\n          Y SALIR")
         }
     }
+}
 
+fun Vaciar(onDelete: () -> Unit){
+    Button(
+        onClick = {
+            onDelete()
+        },
+        enabled = true,
+        modifier = Modifier
+            .size(100.dp, 50.dp)
+    ){
+        Text("VACIAR")
+    }
 }
