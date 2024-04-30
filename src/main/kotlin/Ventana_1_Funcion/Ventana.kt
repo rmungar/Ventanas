@@ -49,7 +49,9 @@ fun Ventanas(
             Login(user, onEntrada1, psswd, psswdVisible, onEntrada2, estadoBotonLogin, onLogin)
         }
         else{
-            Students(estudiante, onEntrada, students, estadoBoton, onBorrar, onDelete, onSave)
+            Students(estudiante, onEntrada, students, estadoBoton, onBorrar, onDelete)
+            Spacer(modifier = Modifier.size(50.dp))
+            Guardar(onSave)
         }
     }
 }
@@ -124,7 +126,7 @@ fun Login(user: String, onEntrada1: (String) -> Unit, psswd: String, psswdVisibl
 }
 
 @Composable
-fun Students(estudiante: String, onEntrada: (String) -> Unit, students: MutableList<String>, estadoBoton: Boolean, onBorrar: (String) -> Unit, onDelete: () -> Unit, onSave: () -> Unit){
+fun Students(estudiante: String, onEntrada: (String) -> Unit, students: MutableList<String>, estadoBoton: Boolean, onBorrar: (String) -> Unit, onDelete: () -> Unit){
     Row {
         Column (
             modifier = Modifier
@@ -201,14 +203,17 @@ fun Students(estudiante: String, onEntrada: (String) -> Unit, students: MutableL
             }
         }
     }
-    Row(
-        modifier = Modifier,
-        verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.Center
-    ) {
+}
+
+@Composable
+fun Guardar(onSave: () -> Unit  ){
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+    ){
         Button(
             modifier = Modifier
-                .align(Alignment.CenterVertically),
+                .align(Alignment.Center),
             onClick = {
                 onSave()
             },
@@ -217,6 +222,6 @@ fun Students(estudiante: String, onEntrada: (String) -> Unit, students: MutableL
             ){
             Text("GUARDAR CAMBIOS\n          Y SALIR")
         }
-        Spacer(Modifier.size(10.dp))
     }
+
 }
