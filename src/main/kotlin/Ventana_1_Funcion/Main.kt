@@ -9,7 +9,7 @@ fun main() = application{
     val archivoEstudiantes = File("src/Students.txt")
     var estudiante by remember { mutableStateOf("") }
     val added =  mutableListOf("")
-    val students = archivoEstudiantes.useLines { it.toMutableList() }
+    val students by remember { mutableStateOf(archivoEstudiantes.useLines { it.toMutableList() }) }
     var verVentanaPrincipal by remember { mutableStateOf(true) }
     var verVentanaSecundaria by remember { mutableStateOf(false) }
     val estadoBoton = estudiante.isNotEmpty()
@@ -34,7 +34,7 @@ fun main() = application{
             verVentanaPrincipal,
             verVentanaSecundaria,
             onEntrada = { estudiante = it },
-            onClick = { added.add(it) },
+            onAgregar = { students.add(it) },
             onSave = {
                 added.forEach {
                     archivoEstudiantes.appendText("\n$it")
@@ -55,8 +55,7 @@ fun main() = application{
                 psswd = ""
             },
             {
-                val lista = archivoEstudiantes.useLines { it.toMutableList() }
-                lista.remove(it)
+                students.remove(it)
             }
         )
     }
