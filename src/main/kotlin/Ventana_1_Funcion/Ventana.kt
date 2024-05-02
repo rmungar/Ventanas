@@ -10,13 +10,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogWindow
+import kotlinx.coroutines.delay
 
 
 @Preview
@@ -38,13 +41,33 @@ fun Ventanas(
     onEntrada1: (String) -> Unit,
     onEntrada2: (String) -> Unit,
     onLogin: () -> Unit,
-    onBorrar: (String) -> Unit
+    onBorrar: (String) -> Unit,
+    showInfoMensaje : Boolean,
+    onDismiss: () -> Unit
 ){
+    var infoMessage by remember { mutableStateOf("") }
+    var showInfoMessage by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.LightGray)
     ){
+        if (showInfoMessage) {
+            InfoMensaje(
+                mensaje = infoMessage,
+                onDismiss = {
+                    showInfoMessage = true
+                    infoMessage = ""
+                }
+            )
+        }
+        LaunchedEffect(showInfoMessage) {
+            if (showInfoMessage) {
+                delay(2000)
+                showInfoMessage = false
+                infoMessage = ""
+            }
+        }
         if (verVentanaPrincipal && !verVentanaSecundaria){
             Login(user, onEntrada1, psswd, psswdVisible, onEntrada2, estadoBotonLogin, onLogin)
         }
@@ -53,7 +76,13 @@ fun Ventanas(
             Spacer(modifier = Modifier.size(50.dp))
             Guardar(onSave)
         }
+
+
     }
+
+
+    // Automáticamente oculta el mensaje después de un retraso
+
 }
 @Composable
 fun Usuario(
@@ -207,15 +236,14 @@ fun Guardar(onSave: () -> Unit  ){
                 .align(Alignment.Center),
             onClick = {
                 onSave()
-            },
-
-
+            }
             ){
             Text("GUARDAR CAMBIOS\n          Y SALIR")
         }
     }
 }
 
+@Composable
 fun Vaciar(onDelete: () -> Unit){
     Button(
         onClick = {
@@ -227,4 +255,22 @@ fun Vaciar(onDelete: () -> Unit){
     ){
         Text("VACIAR")
     }
+}
+
+@Composable
+fun InfoMensaje(mensaje:String, onDismiss: () -> Unit){
+    DialogWindow(
+        icon = painterResource("atencion-1.png")    ,
+        title = "ATENCION",
+        resizable = false,
+        onCloseRequest = onDismiss
+    ){
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize().padding(16.dp)
+        ){
+            Text(mensaje)
+        }
+    }
+
 }

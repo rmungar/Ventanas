@@ -17,7 +17,7 @@ fun main() = application{
     var psswd by remember { mutableStateOf("") }
     val estadoBotonLogin = user.isNotBlank() && psswd.isNotBlank()
     val psswdVisible by remember { mutableStateOf(false)}
-
+    var showInfoMensaje by remember { mutableStateOf(false) }
 
     Window(
        visible = true ,
@@ -39,6 +39,7 @@ fun main() = application{
                 added.forEach {
                     archivoEstudiantes.appendText("\n$it")
                 }
+                showInfoMensaje = true
                 verVentanaPrincipal = true
                 verVentanaSecundaria = false
             },
@@ -56,6 +57,10 @@ fun main() = application{
             },
             {
                 students.remove(it)
+            },
+            showInfoMensaje,
+            onDismiss = {
+                exitApplication()
             }
         )
     }
